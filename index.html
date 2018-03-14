@@ -6,24 +6,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
 
-  <style>
-    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
-    #map { 
-      position:absolute; 
-      width: 50%;
-      height: 50%;
-    }
-    svg {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-    }
-  </style>
+
 </head>
 
 <body>
+
+  <h1>Spoiled Millennials.</h1>
+  <h2>Public Wifi and enough caffeine to power an entire generation. Do these two artifacts of the millennial generation share similar spaces in New York City?</h2> 
+  <h3 class="starbucks">Starbucks Locations</h3>
+  <h3 class="wifi">Public Wifi</h3>
+
   <div id="map"></div>
+
+
+
   <script>
   
     mapboxgl.accessToken = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
@@ -38,10 +37,13 @@
     })
     map.scrollZoom.disable()
     map.addControl(new mapboxgl.Navigation());
+    map.dragRotate.disable();
 
     // Setup our svg layer that we can manipulate with d3
     var container = map.getCanvasContainer()
     var svg = d3.select(container).append("svg")
+
+
 
     // we calculate the scale given mapbox state (derived from viewport-mercator-project's code)
     // to define a d3 projection
@@ -87,10 +89,11 @@
         stroke: "#004d60",
         "stroke-width": 1
       })
-      .transition().duration(1000)
+      .transition().duration(700)
       .attr("r", 6);
 
       console.log(dots);
+
       
       function render() {
         d3Projection = getD3();
@@ -120,6 +123,37 @@
       // render our initial visualization
       render()
     })
+
+
+    function handleMouseOver(d, i) {  // Add interactivity
+
+            // Use D3 to select element, change color and size
+          d3.select(this).attr({
+            fill: "orange",
+            r: radius * 2
+          });
+
+            // Specify where to put label of text
+          svg.append("text").attr({
+             id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+              x: function() { return xScale(d.x) - 30; },
+              y: function() { return yScale(d.y) - 15; }
+            })
+            .text(function() {
+              return [d.x, d.y];  // Value of the text
+            });
+          }
+
+
+      // function handleMouseOut(d, i) {
+      //       // Use D3 to select element, change color back to normal
+      //     d3.select(this).attr({
+
+      //       });
+
+      //       // Select text by id and then remove
+      //     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
+      //     }
 
 
 
