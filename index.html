@@ -16,21 +16,30 @@
 
   <h1>Spoiled Millennials.</h1>
   <h2>Public Wifi and enough caffeine to power an entire generation. Do these two artifacts of the millennial generation share similar spaces in New York City?</h2> 
-  <h3 class="starbucks">Starbucks Locations</h3>
-  <h3 class="wifi">Public Wifi</h3>
+<!--   <h3 class="starbucks">Starbucks Locations</h3>
+  <h3 class="wifi">Public Wifi</h3> -->
+
+  <div class="checkwifi">
+    <input type="checkbox" id="togglewifi" name="wifi" value="wifihastoggle">
+    <label for="wifi">Public Wifi</label>
+  </div>
+
+  <div class="checkcoffee">
+    <input type="checkbox" id="togglecoffee" name="coffee" value="coffeehastoggle">
+    <label for="coffee">Starbucks Coffee</label>
+  </div>
 
   <div id="map"></div>
 
 
-
   <script>
   
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
-    
+    mapboxgl.accessToken = 'pk.eyJ1IjoianQ2ODlzcDE4IiwiYSI6ImNqZXJtdTV2aTE2NW8yd2x0YTRyZnBnMHMifQ.yhMtx5-uADU9vqGlVgQT4g'
+
     //Setup mapbox-gl map
     var map = new mapboxgl.Map({
       container: 'map', // container id
-      style: 'mapbox://styles/enjalot/cihmvv7kg004v91kn22zjptsc',
+      style: 'mapbox://styles/jt689sp18/cjermwxog6yhs2sqbcjxtc4nf',
       center: [-73.9851,40.7589],
       zoom: 9.5,
       
@@ -84,7 +93,7 @@
       dots.enter().append("circle").classed("dot", true)
       .attr("r", 1)
       .style({
-        fill: "#0082a3",
+        fill: "#034500",
         "fill-opacity": 0.6,
         stroke: "#004d60",
         "stroke-width": 1
@@ -123,38 +132,6 @@
       // render our initial visualization
       render()
     })
-
-
-    function handleMouseOver(d, i) {  // Add interactivity
-
-            // Use D3 to select element, change color and size
-          d3.select(this).attr({
-            fill: "orange",
-            r: radius * 2
-          });
-
-            // Specify where to put label of text
-          svg.append("text").attr({
-             id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-              x: function() { return xScale(d.x) - 30; },
-              y: function() { return yScale(d.y) - 15; }
-            })
-            .text(function() {
-              return [d.x, d.y];  // Value of the text
-            });
-          }
-
-
-      // function handleMouseOut(d, i) {
-      //       // Use D3 to select element, change color back to normal
-      //     d3.select(this).attr({
-
-      //       });
-
-      //       // Select text by id and then remove
-      //     d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
-      //     }
-
 
 
     
