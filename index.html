@@ -8,7 +8,7 @@
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.12.0/mapbox-gl.css' rel='stylesheet' />
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 </head>
 
@@ -36,12 +36,17 @@
   
     mapboxgl.accessToken = 'pk.eyJ1IjoianQ2ODlzcDE4IiwiYSI6ImNqZXJtdTV2aTE2NW8yd2x0YTRyZnBnMHMifQ.yhMtx5-uADU9vqGlVgQT4g'
 
+    var bounds = [
+    [-74.4518, 40.4862], // Southwest coordinates
+    [-73.1952, 41.1865]  // Northeast coordinates
+];
     //Setup mapbox-gl map
     var map = new mapboxgl.Map({
       container: 'map', // container id
       style: 'mapbox://styles/jt689sp18/cjermwxog6yhs2sqbcjxtc4nf',
       center: [-73.9851,40.7589],
       zoom: 9.5,
+      maxBounds: bounds
       
     })
     map.scrollZoom.disable()
@@ -89,7 +94,7 @@
       //console.log(data[0], getLL(data[0]), project(data[0]))
       var dots = svg.selectAll("circle.dot")
         .data(points.features);
-      
+
       dots.enter().append("circle").classed("dot", true)
       .attr("r", 1)
       .style({
@@ -103,7 +108,9 @@
 
       console.log(dots);
 
-      
+
+      // if($('input[name=wifi]').prop('disabled',false)) {
+        // console.log(wifihastoggle.value);
       function render() {
         d3Projection = getD3();
         path.projection(d3Projection)
