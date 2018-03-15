@@ -19,18 +19,22 @@
 <!--   <h3 class="starbucks">Starbucks Locations</h3>
   <h3 class="wifi">Public Wifi</h3> -->
 
+<form>
   <div class="checkwifi">
-    <input type="checkbox" id="togglewifi" name="wifi" value="wifihastoggle">
+    <input type="radio" name="toggle" id = "wifi">
     <label for="wifi">Public Wifi</label>
   </div>
 
   <div class="checkcoffee">
-    <input type="checkbox" id="togglecoffee" name="coffee" value="coffeehastoggle">
+    <input type="radio" name="toggle" id = "coffee"> 
     <label for="coffee">Starbucks Coffee</label>
   </div>
+</form>
 
-  <div id="map"></div>
 
+ <br>
+
+<div id="map"></div>
 
   <script>
   
@@ -80,65 +84,76 @@
     // calculate the original d3 projection
     var d3Projection = getD3();
     
-    var path = d3.geo.path()
-    
-  
-    
-    d3.json("convertcsv.json", function(err, data) {
-
-      console.log(err, "err");
-      console.log(typeof data, data);
-
-      var points = data
-      //console.log(points);
-      //console.log(data[0], getLL(data[0]), project(data[0]))
-      var dots = svg.selectAll("circle.dot")
-        .data(points.features);
-
-      dots.enter().append("circle").classed("dot", true)
-      .attr("r", 1)
-      .style({
-        fill: "#034500",
-        "fill-opacity": 0.6,
-        stroke: "#004d60",
-        "stroke-width": 1
-      })
-      .transition().duration(700)
-      .attr("r", 6);
-
-      console.log(dots);
+    var path = d3.geo.path();
 
 
-      // if($('input[name=wifi]').prop('disabled',false)) {
-        // console.log(wifihastoggle.value);
-      function render() {
-        d3Projection = getD3();
-        path.projection(d3Projection)
+    var coffeedatafile = "convertcsv.json"; 
+    var wifidatafile = "wifi.json";
+
+    var colorcof = "#034500"
+    var colorwifi = "#059aa8"
+
+    document.getElementById("wifi").onclick = function() {display(wifidatafile, colorwifi)};
+    document.getElementById("coffee").onclick = function() {display(coffeedatafile, colorcof)};
+
+
+
+    function display(datafile, color) {
+        // body...
+
+        d3.json(datafile, function(err, data) {
+
+        var points = data
         
-        dots
-        .attr({
-          cx: function(d) { 
-            var x = d3Projection(d.geometry.coordinates)[0];
-            return x
-          },
-          cy: function(d) { 
-            var y = d3Projection(d.geometry.coordinates)[1];
-            return y
-          },
+        var dots = svg.selectAll("circle.dot")
+          .data(points.features);
+
+        dots.enter().append("circle").classed("dot", true)
+        .attr("r", 1)
+        .style({
+          fill: color,
+          "fill-opacity": 0.6,
+          stroke: "#004d60",
+          "stroke-width": 1
         })
-      }
+        .transition().duration(700)
+        .attr("r", 6);
 
-      // re-render our visualization whenever the view changes
-      map.on("viewreset", function() {
+        console.log(dots);
+
+
+        
+        function render() {
+          d3Projection = getD3();
+          path.projection(d3Projection)
+          
+          dots
+          .attr({
+            cx: function(d) { 
+              var x = d3Projection(d.geometry.coordinates)[0];
+              return x
+            },
+            cy: function(d) { 
+              var y = d3Projection(d.geometry.coordinates)[1];
+              return y
+            },
+          })
+        }
+
+        // re-render our visualization whenever the view changes
+        map.on("viewreset", function() {
+          render()
+        })
+        map.on("move", function() {
+          render()
+        })
+
+        // render our initial visualization
         render()
       })
-      map.on("move", function() {
-        render()
-      })
-
-      // render our initial visualization
-      render()
-    })
+      }  
+    
+    
 
 
     
