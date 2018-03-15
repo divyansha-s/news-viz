@@ -93,8 +93,14 @@
     var colorcof = "#034500"
     var colorwifi = "#059aa8"
 
-    document.getElementById("wifi").onclick = function() {display(wifidatafile, colorwifi)};
-    document.getElementById("coffee").onclick = function() {display(coffeedatafile, colorcof)};
+    document.getElementById("wifi").onclick = function() {
+                                                            svg.selectAll("circle").remove();
+                                                            display(wifidatafile, colorwifi);
+                                                          };
+    document.getElementById("coffee").onclick = function() {
+                                                            svg.selectAll("circle").remove();
+                                                            display(coffeedatafile, colorcof);
+                                                          };
 
 
 
